@@ -2,13 +2,16 @@
 -- Ejecutar este script en pgAdmin después de crear la base de datos
 
 CREATE TABLE productos (
-    id BIGSERIAL PRIMARY KEY,
-    nombre VARCHAR(255),
-    categoria VARCHAR(255),
-    precio_compra FLOAT,
-    iva FLOAT,
-    precio_venta FLOAT,
-    stock_actual INTEGER
+    id             BIGSERIAL PRIMARY KEY,
+    nombre         VARCHAR(255) NOT NULL UNIQUE,
+    categoria      VARCHAR(255) NOT NULL,
+    precio_compra  FLOAT        NOT NULL CHECK (precio_compra > 0),
+    iva            FLOAT        NOT NULL DEFAULT 0.19 CHECK (iva >= 0),
+    precio_venta   FLOAT        NOT NULL CHECK (precio_venta > 0),
+    stock_actual   INTEGER      NOT NULL DEFAULT 0 CHECK (stock_actual >= 0),
+    stock_minimo   INTEGER      NOT NULL DEFAULT 5 CHECK (stock_minimo >= 0),
+    activo         BOOLEAN      NOT NULL DEFAULT TRUE,
+    creado_en      TIMESTAMP    DEFAULT NOW()
 );
 
 CREATE TABLE ventas (
